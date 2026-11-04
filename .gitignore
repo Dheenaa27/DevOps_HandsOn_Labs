@@ -6,3 +6,6 @@
 **/secrets/
 .DS_Store
 
+
+# Private SSH keys
+*.pem
