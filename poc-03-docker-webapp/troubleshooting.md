@@ -52,6 +52,45 @@ indicate an application code defect.
 Verify process availability, listening ports,
 and service state before changing code.
 
+## Failure Drill 01 — Docker Port Mismatch
+
+### Scenario
+A Flask application was running inside a Docker
+container on port 3000, published on host port 3001.
+
+### Failure
+Attempted to access localhost:3002/health.
+
+Observed:
+curl: (7) Failed to connect to server
+
+### Root Cause
+The request targeted an unpublished host port.
+The correct mapping was 127.0.0.1:3001 -> 3000/tcp.
+
+### Investigation
+docker port poc03-port-drill
+docker ps --filter "name=poc03-port-drill"
+
+### Recovery
+Accessed the correct published host port:
+curl -i http://127.0.0.1:3001/health
+
+### Validation
+HTTP/1.1 200 OK
+{"status":"healthy"}
+
+Container runtime state: running
+
+### Key Learning
+A running container does not guarantee that an
+application is accessible through every host port.
+Correct port mapping and application health must
+be validated independently.
+
+### Production Implication
+Incorrect port mappings or routing configurations
+can make healthy applications unreachable.
 ---
 
 ## Session 01 Summary
