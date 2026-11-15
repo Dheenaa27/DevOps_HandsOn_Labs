@@ -71,3 +71,67 @@ application validation screenshots.
 - Use Git branches for isolated development.
 - Exclude unnecessary and sensitive files.
 - Capture troubleshooting evidence.
+
+## Docker Build Cache Experiment
+
+### Objective
+Understand Docker layer caching and selective cache invalidation.
+
+### Experiment 1 - Cache Reuse
+Rebuilt the image without modifying application files.
+
+Result:
+- WORKDIR: CACHED
+- COPY requirements.txt: CACHED
+- RUN pip install: CACHED
+- COPY application: CACHED
+
+### Experiment 2 - Cache Invalidation
+Added a temporary comment to app/main.py and rebuilt.
+
+Result:
+- Dependency layers remained cached.
+- Application COPY layer was rebuilt.
+- Docker image exported successfully.
+- Original application code was restored.
+
+### Key Learnings
+- Docker caching avoids unnecessary build operations.
+- Dockerfile instruction ordering influences cache reuse.
+- Application changes need not reinstall dependencies.
+- Efficient caching can reduce CI/CD build times.
+creenshots/25.docker_cache_reuse.png
+- screenshots/26.docker_cache_invalidation.png
+
+## Docker Build Cache Experiment
+
+### Objective
+Understand Docker layer caching and selective cache invalidation.
+
+### Experiment 1 - Cache Reuse
+Rebuilt the image without modifying application files.
+
+Result:
+- WORKDIR: CACHED
+- COPY requirements.txt: CACHED
+- RUN pip install: CACHED
+- COPY application: CACHED
+
+### Experiment 2 - Cache Invalidation
+Added a temporary comment to app/main.py and rebuilt.
+
+Result:
+- Dependency layers remained cached.
+- Application COPY layer was rebuilt.
+- Docker image exported successfully.
+- Original application code was restored.
+
+### Key Learnings
+- Docker caching avoids unnecessary build operations.
+- Dockerfile instruction ordering influences cache reuse.
+- Application changes need not reinstall dependencies.
+- Efficient caching can reduce CI/CD build times.
+
+### Evidence
+- screenshots/25.docker_cache_reuse.png
+- screenshots/26.docker_cache_invalidation.png
